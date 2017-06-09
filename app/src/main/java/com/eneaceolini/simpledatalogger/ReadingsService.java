@@ -189,17 +189,19 @@ public class ReadingsService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        startRecording();
         boolean screenOff;
         if (intent != null) {
             if (intent.hasExtra("screen_state")) {
                 screenOff = intent.getBooleanExtra("screen_state", false);
 
                 if (!screenOff) { // If screen is on I register the accelerometer that start recording
+                    write("SCREEN", new String[]{"ON"});
                     Log.d("LOG", "Screen ON");
 
                 } else { // otherwise (if the screen goes off) I analyze the data recorded in the last session
-                    Log.d("LOG", "Screen OFF");                }
+                    write("SCREEN", new String[]{"OFF"});
+                    Log.d("LOG", "Screen OFF");
+                }
             }
         }
         return START_STICKY;
